@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -8,7 +9,6 @@ import io
 app = Flask(__name__)
 
 model = load_model("model.h5")
-
 class_labels = ["Residu", "Organik", "Anorganik"]
 
 def preprocess_image(img):
@@ -40,4 +40,5 @@ def classify():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  
+    app.run(host='0.0.0.0', port=port, debug=True)  
